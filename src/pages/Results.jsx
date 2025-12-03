@@ -4,8 +4,12 @@ import { Button } from "@/components/ui/button";
 import { LaptopCard } from "@/components/LaptopCard";
 import { getRecommendedLaptops } from "@/data/laptops";
 import { ChevronLeft, ArrowRight } from "lucide-react";
+import { LaptopApi } from "../api/laptop.api";
+import { useDispatch } from "react-redux";
+import { setLastFetched } from "../store/laptopSlice";
 
 const Results = () => {
+  const dispatch = useDispatch();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const [selectedLaptops, setSelectedLaptops] = useState([]);
@@ -14,12 +18,21 @@ const Results = () => {
   const priority = searchParams.get("priority");
   const budget = searchParams.get("budget");
 
-  const recommendations = getRecommendedLaptops(usage, priority, budget);
+  const [recommendations, setRecommendations] = useState([]);
 
   useEffect(() => {
     if (!usage || !priority || !budget) {
       navigate("/");
     }
+
+    LaptopApi.get_rekomendasi(budget, priority, usage)
+      .then((res) => {
+        setRecommendations(res.data)
+        dispatch(setLastFetched(res.data));
+      })
+      .catch((err) => {
+        console.error(err);
+    });
   }, [usage, priority, budget, navigate]);
 
   const handleToggleCompare = (laptop) => {
@@ -37,6 +50,7 @@ const Results = () => {
   const handleCompare = () => {
     if (selectedLaptops.length >= 2) {
       const ids = selectedLaptops.map((l) => l.id).join(",");
+      console.log(ids)
       navigate(`/compare?ids=${ids}`);
     }
   };
@@ -103,7 +117,7 @@ const Results = () => {
                 <p className="text-sm text-muted-foreground">
                   {selectedLaptops.length < 2
                     ? "Pilih minimal 2 laptop untuk membandingkan"
-                    : `Siap membandingkan ${selectedLaptops.map((l) => l.name).join(", ")}`}
+                    : `Siap membandingkan ${selectedLaptops.map((l) => l.nama_produk).join(", ")}`}
                 </p>
               </div>
               <Button

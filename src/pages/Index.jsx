@@ -23,7 +23,7 @@ const Index = () => {
   ];
 
   const priorityOptions = [
-    { id: "harga", label: "Harga murah", icon: DollarSign, desc: "Budget terbatas" },
+    { id: "harga_murah", label: "Harga murah", icon: DollarSign, desc: "Budget terbatas" },
     { id: "performa", label: "Performa", icon: Gauge, desc: "Kecepatan maksimal" },
     { id: "baterai", label: "Baterai", icon: Battery, desc: "Tahan lama" },
     { id: "ringan", label: "Ringan", icon: Feather, desc: "Mudah dibawa" },

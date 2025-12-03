@@ -7,17 +7,18 @@ import { formatPrice } from "@/data/laptops";
 export const LaptopCard = ({ laptop, onCompare, isSelected, compact }) => {
   return (
     <Card className="p-6 hover:shadow-[var(--shadow-card-hover)] transition-all duration-300 h-full flex flex-col">
-      <div className="flex items-start justify-between mb-4">
-        <div className="flex items-center gap-3">
-          <span className="text-4xl">{laptop.image}</span>
-          <div>
-            <h3 className="font-bold text-lg">{laptop.name}</h3>
-            <p className="text-sm text-muted-foreground">{laptop.brand}</p>
-          </div>
-        </div>
-        <div className="flex items-center gap-1 text-sm">
-          <Star className="w-4 h-4 fill-primary text-primary" />
-          <span className="font-semibold">{laptop.rating}</span>
+      <div className="flex items-start gap-3 w-full">
+        <span className="w-24 h-24 flex-shrink-0 self-start flex items-center justify-center overflow-hidden">
+          <img
+            src={`${laptop.brand}-logo.png`}
+            alt="Logo"
+            className="w-full h-full object-contain"
+          />
+        </span>
+
+        <div className="flex-grow whitespace-normal break-words">
+          <h3 className="font-bold text-lg">{laptop.nama_produk}</h3>
+          <p className="text-sm text-muted-foreground">{laptop.brand}</p>
         </div>
       </div>
 
@@ -27,24 +28,24 @@ export const LaptopCard = ({ laptop, onCompare, isSelected, compact }) => {
             <div className="grid grid-cols-2 gap-2 text-sm">
               <div>
                 <span className="text-muted-foreground">Processor:</span>
-                <p className="font-medium">{laptop.specs.processor}</p>
+                <p className="font-medium">{laptop.cpu_brand}</p>
               </div>
               <div>
                 <span className="text-muted-foreground">RAM:</span>
-                <p className="font-medium">{laptop.specs.ram}</p>
+                <p className="font-medium">{laptop.ram_size} GB</p>
               </div>
               <div>
                 <span className="text-muted-foreground">Storage:</span>
-                <p className="font-medium">{laptop.specs.storage}</p>
+                <p className="font-medium">{laptop.storage_capacity} GB</p>
               </div>
               <div>
-                <span className="text-muted-foreground">Graphics:</span>
-                <p className="font-medium">{laptop.specs.graphics}</p>
+                <span className="text-muted-foreground">Storage Type:</span>
+                <p className="font-medium">{laptop.storage_type}</p>
               </div>
             </div>
           </div>
 
-          <div className="flex flex-wrap gap-2 mb-4">
+          {/* <div className="flex flex-wrap gap-2 mb-4">
             {laptop.strengths.slice(0, 3).map((strength) => (
               <Badge key={strength} variant="secondary" className="text-xs">
                 {strength === "harga" && "💰 Harga Terjangkau"}
@@ -53,13 +54,13 @@ export const LaptopCard = ({ laptop, onCompare, isSelected, compact }) => {
                 {strength === "ringan" && "🪶 Ringan"}
               </Badge>
             ))}
-          </div>
+          </div> */}
         </>
       )}
 
       <div className="flex items-center justify-between pt-4 border-t border-border">
         <div>
-          <p className="text-2xl font-bold text-primary">{formatPrice(laptop.price)}</p>
+          <p className="text-2xl font-bold text-primary">{formatPrice(laptop.harga_normal)}</p>
         </div>
         {onCompare && (
           <Button
