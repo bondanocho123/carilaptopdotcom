@@ -6,6 +6,7 @@ import { ChevronLeft, AlertCircle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { useSelector } from "react-redux";
 import { formatPrice } from "@/data/laptops";
+import { MarketplaceButton } from "../components/MarketplaceButton";
 
 // === RANKING CPU, LAYAR, OS 2025 (BERDASARKAN laptop.csv) ===
 const CPU_RANKING = {
@@ -181,6 +182,7 @@ const Compare = () => {
     layar_resolusi: "Resolusi Layar",
     layar_panel: "Jenis Panel",
     os: "Sistem Operasi",
+    link_marketplace: "Link Produk",
   };
 
   const formatSpec = (key, value) => {
@@ -248,7 +250,13 @@ const Compare = () => {
                         />
                         <div>
                           <h3 className="font-bold text-lg leading-tight">{laptop.nama_produk}</h3>
-                          <p className="text-sm text-muted-foreground capitalize">{laptop.brand}</p>
+                          {/* <p className="text-sm text-muted-foreground capitalize">{laptop.cpu_brand}</p> */}
+                          <img
+                            src={`/${laptop.cpu_brand}-logo.png`}
+                            alt={laptop.brand}
+                            className="w-8 h-8 mx-auto object-contain"
+                            onError={(e) => (e.target.style.display = "none")}
+                          />
                         </div>
                       </div>
                     </th>
@@ -284,21 +292,34 @@ const Compare = () => {
                       {compareLaptops.map((laptop, i) => {
                         const value = laptop[key];
                         const isBest = bestIndices.includes(i);
-
-                        return (
-                          <td key={laptop.id} className="p-4 text-center">
-                            <div className="space-y-1">
-                              <span className={isBest ? "font-bold text-primary" : ""}>
-                                {formatSpec(key, value)}
-                              </span>
-                              {isBest && (
-                                <Badge className="bg-primary/20 text-primary">
-                                  Terbaik
-                                </Badge>
-                              )}
-                            </div>
-                          </td>
-                        );
+                        console.log(key)
+                        if (key === "link_marketplace") {
+                          return (
+                            <td key={laptop.id} className="p-4 text-center">
+                              <div className="space-y-1">
+                                <MarketplaceButton label={"Lihat produk"}href={value} />
+                              </div>
+                            </td>
+                          )
+                          
+                        } else {
+                          return (
+                            <td key={laptop.id} className="p-4 text-center">
+                              <div className="space-y-1">
+                                <span className={isBest ? "font-bold text-primary" : ""}>
+                                  {formatSpec(key, value)}
+                                </span>
+                                {isBest && (
+                                  <Badge className="bg-primary/20 text-primary">
+                                    Terbaik
+                                  </Badge>
+                                )}
+                              </div>
+                            </td>
+                          );
+                        }
+                        
+                        
                       })}
                     </tr>
                   );

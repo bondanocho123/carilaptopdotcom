@@ -272,9 +272,25 @@ const Index = () => {
           </div>
         </Card>
 
-        {/* Footer */}
+        <div className="my-12 flex justify-center animate-fade-in">
+          <Button
+            className="
+              px-6 py-5 rounded-2xl font-medium text-base
+              bg-gradient-to-r from-indigo-600 to-violet-600
+              text-white shadow-md hover:shadow-xl
+              hover:scale-[1.03] active:scale-[0.98]
+              transition-all duration-300 space-y-6
+            "
+            onClick={() => navigate("/feedback")} // ganti sesuai kebutuhan
+          >
+            Beri Kritik dan Saran
+          </Button>
+        </div>
+        
         <Footer />
       </div>
+      {/* Footer */}
+        
     </div>
   );
 };

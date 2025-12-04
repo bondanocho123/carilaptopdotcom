@@ -2,16 +2,19 @@ import { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { LaptopCard } from "@/components/LaptopCard";
+import {LaptopSkeletonCard} from "@/components/LaptopCardSkeleton";
 import { getRecommendedLaptops } from "@/data/laptops";
 import { ChevronLeft, ArrowRight } from "lucide-react";
 import { LaptopApi } from "../api/laptop.api";
 import { useDispatch } from "react-redux";
 import { setLastFetched } from "../store/laptopSlice";
+import { set } from "react-hook-form";
 
 const Results = () => {
   const dispatch = useDispatch();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
   const [selectedLaptops, setSelectedLaptops] = useState([]);
 
   const usage = searchParams.get("usage");
@@ -25,6 +28,7 @@ const Results = () => {
       navigate("/");
     }
 
+    setLoading(true);
     LaptopApi.get_rekomendasi(budget, priority, usage)
       .then((res) => {
         setRecommendations(res.data)
@@ -32,7 +36,8 @@ const Results = () => {
       })
       .catch((err) => {
         console.error(err);
-    });
+      })
+      .finally(() => { setLoading(false)  });
   }, [usage, priority, budget, navigate]);
 
   const handleToggleCompare = (laptop) => {
@@ -133,7 +138,15 @@ const Results = () => {
         )}
 
         {/* Results Grid */}
-        {recommendations.length > 0 ? (
+        {loading ? (
+          // LOADING VIEW
+          <div className="flex flex-col md:grid md:grid-cols-3 gap-6">
+            {Array.from({ length: 3 }).map((_, i) => (
+              <LaptopSkeletonCard key={i} />
+            ))}
+          </div>
+        ) : recommendations.length > 0 ? (
+          // HAS DATA
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-fade-in">
             {recommendations.map((laptop) => (
               <LaptopCard
@@ -145,6 +158,7 @@ const Results = () => {
             ))}
           </div>
         ) : (
+          // EMPTY STATE
           <div className="text-center py-12">
             <p className="text-xl text-muted-foreground">
               Tidak ada laptop yang cocok dengan kriteria Anda.

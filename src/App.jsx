@@ -7,6 +7,7 @@ import Index from "./pages/Index";
 import Results from "./pages/Results";
 import Compare from "./pages/Compare";
 import NotFound from "./pages/NotFound";
+import FeedBack from "./pages/FeedBack";
 import { Provider } from "react-redux";
 import { store } from "./store";
 
@@ -23,6 +24,7 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/results" element={<Results />} />
             <Route path="/compare" element={<Compare />} />
+            <Route path="/feedback" element={<FeedBack />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
